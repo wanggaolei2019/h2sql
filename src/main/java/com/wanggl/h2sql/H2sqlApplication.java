@@ -1,5 +1,6 @@
 package com.wanggl.h2sql;
 
+import cn.hutool.core.io.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -8,11 +9,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Objects;
 
 @EnableJpaAuditing
 @SpringBootApplication
@@ -20,16 +21,21 @@ public class H2sqlApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(H2sqlApplication.class);
 
+    private static ConfigurableApplicationContext applicationContext;
+
     public static void main(String[] args) throws FileNotFoundException {
-        String authority = Objects.requireNonNull(
-                ProgressBeanPostProcessor.class.getClassLoader().getResource("")).getAuthority();
-        PrintStream ps = new PrintStream(authority + "progress.txt");
+        FileUtil.mkdir(new File("./log"));
+        PrintStream ps = new PrintStream("./log/progress.txt");
         ps.print(1);
         ps.flush();
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(H2sqlApplication.class, args);
+        applicationContext = SpringApplication.run(H2sqlApplication.class, args);
         Environment env = applicationContext.getEnvironment();
         logStartup(env);
         ps.close();
+    }
+
+    public static void shutdown() {
+        applicationContext.close();
     }
 
     private static void logStartup(Environment env) {

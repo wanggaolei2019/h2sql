@@ -44,5 +44,4 @@ logging:
   level:
     ROOT: info
   file:
-    name: ./log/running.log
-
+    name: ./log/output.log
