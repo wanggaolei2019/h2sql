@@ -1,0 +1,48 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 8
+      min-spare: 1
+    max-http-form-post-size: 128MB
+    max-swallow-size: 128MB
+    connection-timeout: 30000
+    accept-count: 8
+    max-connections: 16
+  port: 23333
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 128MB
+      max-request-size: 128MB
+  mvc:
+    async:
+      request-timeout: 30000
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./data/db
+    username: admin
+    password: 123456
+  jpa:
+    database: h2
+    show-sql: true
+    open-in-view: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+        web-admin-password: 123456
+
+logging:
+  level:
+    ROOT: info
+  file:
+    name: ./log/running.log
+
